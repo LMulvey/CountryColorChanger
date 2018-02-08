@@ -48,14 +48,14 @@
                 onEachFeature: function(feature, layer) {
                     layer.on({
                         click: function(e) {
-                            createDropdown(layer);
                             layer.setStyle({
                                 fillColor: BGColorHelper.get(layer.options.clicks)
                             });
                             layer.options.clicks = 
-                                (layer.options.clicks >= BGColorHelper.colors.length-1)
-                                ? 2
-                                : layer.options.clicks += 1;
+                            (layer.options.clicks >= BGColorHelper.colors.length-1)
+                            ? 2
+                            : layer.options.clicks += 1;
+                            createDropdown(layer);
                         },
                         mouseover: function() {
                             layer.setStyle({
@@ -77,7 +77,7 @@
     });
     
     function createDropdown(layer) {
-       $('.dropdown').remove();
+       $('.dropdownContainer').remove();
        let colors = '';
        console.log(layer)
        BGColorHelper.colors.forEach((color, i) => {
