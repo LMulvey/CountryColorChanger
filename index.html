@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Leaflet Country Map</title>
 
-    <link rel="stylesheet" href="/assets/vendor/leaflet.css" />
-    <script src="/assets/vendor/leaflet.js"></script>     
+    <link rel="stylesheet" href="assets/vendor/leaflet.css" />
+    <script src="assets/vendor/leaflet.js"></script>     
 
-    <link rel="stylesheet" href="/assets/app.css" />
+    <link rel="stylesheet" href="assets/app.css" />
     
 </head>
 <body>
     <div id="map"></div>
 </body>
 
-<script src="/assets/vendor/jquery-3.3.1.min.js"></script>
+<script src="assets/vendor/jquery-3.3.1.min.js"></script>
 <script>
     let map = L.map('map').setView([47.040182144806664, -2.1093750000000004], 1.5);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
