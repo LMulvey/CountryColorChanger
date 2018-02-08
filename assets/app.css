@@ -1,0 +1,31 @@
+body {
+    margin: 0 auto;
+    padding: 0;
+}
+
+#map {
+    height: 650px;
+    width: 1000px;
+    margin: 25px auto;
+}
+
+.dropdownContainer {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 15px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    color: black;
+    z-index: 1000;
+}
+
+.dropdown {
+    width: 200px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    height: 25px;
+    margin-left: 5px;
+    z-index: 1000;
+}

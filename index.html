@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Leaflet Country Map</title>
+
+    <link rel="stylesheet" href="/assets/vendor/leaflet.css" />
+    <script src="/assets/vendor/leaflet.js"></script>     
+
+    <link rel="stylesheet" href="/assets/app.css" />
+    
+</head>
+<body>
+    <div id="map"></div>
+</body>
+
+<script src="/assets/vendor/jquery-3.3.1.min.js"></script>
+<script>
+    let map = L.map('map').setView([47.040182144806664, -2.1093750000000004], 1.5);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+        noWrap: true
+    }).addTo(map);
+    map.doubleClickZoom.disable(); //Annoying to have this on when clicking countries
+
+    let geoLayer;
+
+    $.ajax({url: '/json/countries.geo.json'})
+        .done(data => {
+            let countryData = {
+                type: "FeatureCollection",
+                features: []
+            };
+            data.features.forEach(item => {
+                countryData.features.push(item);
+            });
+            
+            geoLayer = L.geoJSON(data, {
+                clicks: 0,
+                style: {
+                    color: 'rgba(0, 0, 0, 0.1)',
+                    weight: 1.8,
+                    fillOpacity: 0.8,
+                    fillColor: '#F1F1F1'
+                },
+                onEachFeature: function(feature, layer) {
+                    layer.on({
+                        click: function(e) {
+                            createDropdown(layer);
+                            layer.setStyle({
+                                fillColor: BGColorHelper.get(layer.options.clicks)
+                            });
+                            layer.options.clicks = 
+                                (layer.options.clicks >= BGColorHelper.colors.length-1)
+                                ? 2
+                                : layer.options.clicks += 1;
+                        },
+                        mouseover: function() {
+                            layer.setStyle({
+                                weight: 5
+                            });
+                        },
+                        mouseout: function() {
+                            layer.setStyle({
+                                weight: 1.8
+                            })
+                        }
+                    })
+                }
+            }).addTo(map);
+        });
+
+    map.on('dragend', () => {
+        console.log(map.getCenter());
+    });
+    
+    function createDropdown(layer) {
+       $('.dropdown').remove();
+       let colors = '';
+       console.log(layer)
+       BGColorHelper.colors.forEach((color, i) => {
+        colors += `<option value="${i}">${color.nice}</option>`;
+       });
+        let dropdown = $(`<div class="dropdownContainer">
+            ${layer.feature.properties.name}
+            <select class="dropdown" name="${layer.feature.id}">
+            ${colors}
+        </select>
+        </div>`).prependTo('#map');
+
+        $(dropdown).on('change', (e) => {
+            layer.setStyle({
+                fillColor: BGColorHelper.get(e.target.value)
+            });
+            layer.options.clicks = e.target.value;
+            $('.dropdownContainer').fadeOut(200, "linear", function () { this.remove() });
+        });
+    }
+
+
+    const BGColorHelper = {
+        get: function (click) { 
+            return this.colors[click].hex;
+        },
+        colors: [
+            {hex: 'yellow', nice: "Yellow"},
+            {hex: 'dodgerblue', nice: "Blue"},
+            {hex: 'green', nice: "Green"}
+        ]
+    }
+
+</script>
+</html>
