@@ -26,7 +26,7 @@
     map.doubleClickZoom.disable(); //Annoying to have this on when clicking countries
 
     let geoLayer;
-    $.ajax({url: '/json/countries.geo.json'})
+    $.ajax({url: 'json/countries.geo.json'})
         .done(data => {
             geoLayer = L.geoJSON(data, {
                 style: {
