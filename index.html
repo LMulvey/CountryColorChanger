@@ -89,6 +89,7 @@
                 fillColor: BGColorHelper.get(e.target.value)
             });
             layer.options.clicks = e.target.value;
+            localStorage.setItem(`clicksData-${layer.feature.id}`, layer.options.clicks);
             $('.dropdownContainer').fadeOut(200, "linear", function () { this.remove() });
         });
     }
