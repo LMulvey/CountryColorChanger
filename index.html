@@ -18,7 +18,12 @@
 
 <script src="assets/vendor/jquery-3.3.1.min.js"></script>
 <script>
-    let map = L.map('map').setView([47.040182144806664, -2.1093750000000004], 1.5);
+    let map = L.map('map', {
+        minZoom: 1.5,
+        maxBounds: [[83.86761625146907, 173.67187500000003],
+                [-51.83577752045248, -177.89062500000003]]
+    })
+    .setView([47.040182144806664, -2.1093750000000004], 1.5);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
         noWrap: true
@@ -69,6 +74,11 @@
                 }
             }).addTo(map);
         });
+
+        
+    map.on('zoomend', () => {
+        console.log(map.getBounds());
+    })
 
     
     function createDropdown(layer) {
