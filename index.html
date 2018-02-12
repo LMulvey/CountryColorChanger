@@ -90,6 +90,7 @@
         let dropdown = $(`<div class="dropdownContainer">
             ${layer.feature.properties.name}
             <select class="dropdown" name="${layer.feature.id}">
+            <option disabled selected>[Choose color]</option>
             ${colors}
         </select>
         </div>`).prependTo('#map');
